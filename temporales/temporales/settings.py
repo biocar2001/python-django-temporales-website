@@ -56,7 +56,7 @@ ROOT_URLCONF = 'temporales.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["temporales/temporales/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,16 +77,13 @@ WSGI_APPLICATION = 'temporales.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'temporales',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'biocar2001$temporales',
+        'USER': 'biocar2001',
+        'PASSWORD': 'Guadalu40',
+        'HOST': 'biocar2001.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
@@ -124,3 +121,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
+
+LOGIN_REDIRECT_URL = '/'
