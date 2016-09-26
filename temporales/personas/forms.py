@@ -38,7 +38,7 @@ class PersonasForm(ModelForm):
 	empresa= forms.ModelChoiceField(queryset=Empresa.objects.all().order_by('nombre'), widget=forms.Select(attrs={'class':'form-control'}),required=False)
 	date_born= forms.CharField(widget=forms.Select(choices=MY_CHOICES, attrs={'class':'form-control'}), required= True,label='Nivel de Ingles')
 	activo= forms.BooleanField(required=False,label='Activo')
-	fecha_nac= forms.DateField(widget=forms.DateInput(format=('%Y-%m-%d'),attrs={'class':'form-control','placeholder':'Rellena una fecha con formato yyyy-mm-dd'}),required=True)
+	english_level= forms.DateField(widget=forms.DateInput(format=('%Y-%m-%d'),attrs={'class':'form-control','placeholder':'Rellena una fecha con formato yyyy-mm-dd'}),required=True)
 	observaciones= forms.CharField(widget=forms.widgets.Textarea(attrs={'class':'form-control'}), required=False)
 	#id = forms.CharField(widget=forms.HiddenInput(), required=False)
 
