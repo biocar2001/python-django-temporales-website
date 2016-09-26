@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date, datetime, timedelta, time
+from django.utils.timezone import now
 
 class Salario(models.Model):
     nombre = models.CharField('nombre salario', max_length=250,default='no name')
@@ -35,12 +36,21 @@ class Persona(models.Model):
     apellidos = models.CharField('apellidos', max_length=500)
     observaciones = models.TextField('observaciones', blank=True)
     is_active = models.BooleanField('usuario asignado', default=False)
-    date_born = models.DateTimeField('fecha nacimiento')
+    date_born = models.DateField('fecha nacimiento')
     english_level = models.IntegerField('nivel ingles')
     empresa = models.ForeignKey(Empresa)
     def __str__(self):              # __unicode__ on Python 2
         return self.nombre
     def age(self):
-        diff = (datetime.date.today() - self.date_born).days
+        diff = (now().date().today() - self.date_born).days
         years = str(int(diff/365))
-        return years + ' años'
+        return years
+    def ingles(self):
+        level=''
+        if self.english_level == 1:
+            level='Bajo'
+        elif self.english_level == 2:
+            level='Medio'
+        elif self.english_level == 3:
+            level='Alto'
+        return level

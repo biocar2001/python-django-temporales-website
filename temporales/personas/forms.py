@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from models import *
-
+from django.db import models
+from django.forms import ModelForm
 
 # If you don't do this you cannot use Bootstrap CSS
 class LoginForm(AuthenticationForm):
@@ -23,7 +24,8 @@ class FiltrosPersonasForm(forms.Form):
 	edad= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'p. ej: 25, 17'}), required=False)
 	activo= forms.BooleanField(required=False,initial=False, label='Activo')
 
-class PersonasForm(forms.Form):
+class PersonasForm(ModelForm):
+
 	MY_CHOICES = (
 	    ('', '-----'),
         ('1', 'Bajo'),
@@ -31,11 +33,17 @@ class PersonasForm(forms.Form):
         ('3', 'Alto'),
     )
 	#Campos
-	nombre= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=False)
-	apellidos= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=False)
+	nombre= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=True)
+	apellidos= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=True)
 	empresa= forms.ModelChoiceField(queryset=Empresa.objects.all().order_by('nombre'), widget=forms.Select(attrs={'class':'form-control'}),required=False)
-	ingles= forms.CharField(widget=forms.Select(choices=MY_CHOICES, attrs={'class':'form-control'}), required= False)
-	fecha_nac= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'p. ej: 15-09-1984'}), required=False)
-	activo= forms.BooleanField(required=False,initial=False, label='Activo')
-	fecha_nac= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'p. ej: 15-09-1984'}), required=False)
+	date_born= forms.CharField(widget=forms.Select(choices=MY_CHOICES, attrs={'class':'form-control'}), required= True,label='Nivel de Ingles')
+	activo= forms.BooleanField(required=False,label='Activo')
+	fecha_nac= forms.DateField(widget=forms.DateInput(format=('%Y-%m-%d'),attrs={'class':'form-control','placeholder':'Rellena una fecha con formato yyyy-mm-dd'}),required=True)
+	observaciones= forms.CharField(widget=forms.widgets.Textarea(attrs={'class':'form-control'}), required=False)
+	#id = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+	class Meta:
+	    model = Persona
+	    fields = ('nombre', 'apellidos', 'empresa', 'date_born', 'activo', 'fecha_nac', 'observaciones')
+
 

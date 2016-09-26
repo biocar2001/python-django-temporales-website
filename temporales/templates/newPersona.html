@@ -2,9 +2,19 @@
 
 {% block content %}
 {% load static %}
-        <h1>New post</h1>
-        <form method="POST" class="post-form">{% csrf_token %}
+<script>
+function goBack() {
+    window.location.href = "/personas";
+}
+</script>
+<div class="container">
+
+        <form method="POST" action="/newPersona/"class="post-form">{% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Save</button>
-        </form>
+            <button type="submit" class="save btn btn-default">Guardar</button>
+            <a href="/personas/" class="save btn btn-primary" role="button" aria-disabled="true">Cancelar</a>
+            <br>
+            <br>
+         </form>
+</div>
 {% endblock %}
