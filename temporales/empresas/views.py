@@ -1,6 +1,6 @@
 
 from django.contrib.auth.decorators import login_required
-from models import *
+from personas.models import *
 from forms import *
 from django.template import RequestContext, Context, loader
 from django.http import HttpResponse, HttpResponseRedirect
@@ -20,17 +20,13 @@ from datetime import date, datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 
 
-@login_required(login_url="login/")
-def home(request):
-    return render(request,"home.html")
-
 @login_required
-def indexPersonas(request):
+def indexEmpresas(request):
     meta=request.META
     ruta=meta['SCRIPT_NAME']
-    formFilter= FiltrosPersonasForm()
+    formFilter= FiltrosEmpresasForm()
     if request.method == 'POST':
-        form = FiltrosPersonasForm(data=request.POST)
+        form = FiltrosEmpresasForm(data=request.POST)
 
         if form.is_valid():
             empresa = request.POST.get('empresa', '')
@@ -67,29 +63,29 @@ def indexPersonas(request):
             personas = Persona.objects.filter(queryFinal).order_by('nombre')
 
     else:
-        personas = Persona.objects.order_by('nombre')
-    paginator = Paginator(personas, 10)
+        empresas = Empresa.objects.order_by('nombre')
+    paginator = Paginator(empresas, 10)
     page = request.GET.get('page')
     if page is None:
         page=1
     try:
-        contacts = paginator.page(page)
+        companies = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        contacts = paginator.page(1)
+        companies = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        contacts = paginator.page(paginator.num_pages)
-    return render(request, 'indexPersonas.html', {'personas':contacts,'formFilter':formFilter,})
+        companies = paginator.page(paginator.num_pages)
+    return render(request, 'indexEmpresas.html', {'empresas':companies,'formFilter':formFilter,})
 
 
 
 @login_required
-def new_persona(request):
+def new_empresa(request):
     meta = request.META
     ruta = meta['SCRIPT_NAME']
     if request.method == 'POST':
-        form = PersonasForm(data=request.POST)
+        form = EmpresasForm(data=request.POST)
         if form.is_valid():
             #try:
             nombre = request.POST.get('nombre', '')
@@ -142,17 +138,17 @@ def new_persona(request):
                 contacts = paginator.page(paginator.num_pages)
             return render(request, 'indexPersonas.html', {'personas':contacts,'formFilter':formFilter,})
     else:
-        form = PersonasForm()
-    return render(request, 'newPersona.html', {'form':form,})
+        form = EmpresasForm()
+    return render(request, 'newEmpresa.html', {'form':form,})
 
 @login_required
-def detailPersona(request, idpersona):
+def detailPersona(request, idempresa):
     meta = request.META
     ruta = meta['SCRIPT_NAME']
     try:
-        persona = Persona.objects.get(pk = idpersona)
+        empresa = Empresa.objects.get(pk = idempresa)
     except:
-		messages.error(request, 'la persona '+ idpersona + ' no existe' )
+		messages.error(request, 'la empresa '+ idempresa + ' no existe' )
 		return HttpResponseRedirect(ruta+"/personas/")
-    form = PersonasForm(instance=persona)
-    return render(request, 'newPersona.html', {'form':form,})
+    form = EmpresasForm(instance=empresa)
+    return render(request, 'newEmpresa.html', {'form':form,})

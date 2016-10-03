@@ -36,14 +36,14 @@ class PersonasForm(ModelForm):
 	nombre= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=True)
 	apellidos= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=True)
 	empresa= forms.ModelChoiceField(queryset=Empresa.objects.all().order_by('nombre'), widget=forms.Select(attrs={'class':'form-control'}),required=False)
-	date_born= forms.CharField(widget=forms.Select(choices=MY_CHOICES, attrs={'class':'form-control'}), required= True,label='Nivel de Ingles')
-	activo= forms.BooleanField(required=False,label='Activo')
-	english_level= forms.DateField(widget=forms.DateInput(format=('%Y-%m-%d'),attrs={'class':'form-control','placeholder':'Rellena una fecha con formato yyyy-mm-dd'}),required=True)
+	english_level= forms.CharField(widget=forms.Select(choices=MY_CHOICES, attrs={'class':'form-control'}), required= True,label='Nivel de Ingles')
+	is_active= forms.BooleanField(widget=forms.CheckboxInput(),required=False,label='Activo')
+	date_born= forms.DateField(widget=forms.DateInput(format=('%Y-%m-%d'),attrs={'class':'form-control','placeholder':'Rellena una fecha con formato yyyy-mm-dd'}),required=True)
 	observaciones= forms.CharField(widget=forms.widgets.Textarea(attrs={'class':'form-control'}), required=False)
-	#id = forms.CharField(widget=forms.HiddenInput(), required=False)
+	id = forms.CharField(widget=forms.HiddenInput(), required=False)
 
 	class Meta:
 	    model = Persona
-	    fields = ('nombre', 'apellidos', 'empresa', 'date_born', 'activo', 'fecha_nac', 'observaciones')
+	    fields = ('nombre', 'apellidos', 'empresa', 'english_level', 'is_active', 'date_born', 'observaciones', 'id')
 
 

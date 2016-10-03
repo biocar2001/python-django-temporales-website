@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<div class="container">
+    <a href="/newEmpresa/" class="save btn btn-info" role="button" aria-disabled="true">Nuevo</a>
+    <a href="/empresas/" class="save btn btn-warning" role="button" aria-disabled="true">Refrescar Listado</a>
+</div><br>
+
+ <div class="container">
+
+{% if empresas %}
+	<u> LISTADO DE EMPRESAS</u>
+	<table class="table table-striped">
+	<thead class="thead-default">
+    	<tr>
+    	 <th>Nombre</th>
+    	  <th>ETT</th>
+    	  <th>Localizacion</th>
+    	  <th></th>
+    	</tr>
+	</thead>
+  <tbody>
+	{% for empresa in empresas %}
+		<tr>
+		  <td>{{empresa.nombre}}</td>
+		  <td>{{empresa.ett}}</td>
+		  <td>{{empresa.localizacion}}</td>
+		  <td><a href="/detailEmpresa/{{empresa.id}}" class="save btn btn-primary" role="button" aria-disabled="true">Detalle</a></td>
+		</tr>
+	{% endfor %}
+	</tbody>
+	</table>
+    <nav aria-label="...">
+        <ul class="pagination">
+
+            {% if personas.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="/empresas/?page={{ empresas.previous_page_number }}" tabindex="-1" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            {% endif %}
+            <li class="page-item active">
+                <span class="current">
+                    Page {{ empresas.number }} of {{ empresas.paginator.num_pages }}.
+                </span>
+            </li>
+
+            {% if empresas.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="/empresas/?page={{ empresas.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+            {% endif %}
+            <li class="page-item"><strong>Total Empresas:</strong> {{ empresas.paginator.count }}</li>
+
+        </ul>
+    </nav>
+
+{% else %}
+	<h1 class="jumbotron-heading"> No existen empresas en la base de datos</h1>
+{% endif %}
+</div>
+
+  {% endblock %}
