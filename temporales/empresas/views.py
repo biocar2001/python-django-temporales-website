@@ -25,45 +25,7 @@ def indexEmpresas(request):
     meta=request.META
     ruta=meta['SCRIPT_NAME']
     formFilter= FiltrosEmpresasForm()
-    if request.method == 'POST':
-        form = FiltrosEmpresasForm(data=request.POST)
-
-        if form.is_valid():
-            empresa = request.POST.get('empresa', '')
-            queryFinal = Q()
-            if empresa != "":
-                newEmpresa = Empresa.objects.get(id=empresa)
-                queryParcial = Q(empresa=newEmpresa)
-                queryFinal = queryFinal & (queryParcial)
-            ingles = request.POST.get('ingles', '')
-            if ingles != "":
-                queryParcial = Q(english_level=ingles)
-                queryFinal = queryFinal & (queryParcial)
-
-            edad = request.POST.get('edad', '')
-            if edad != "":
-                edad=int(edad)
-                max_date = date.today()
-                try:
-                    max_date = max_date.replace(year=max_date.year - edad)
-                except ValueError: # 29th of february and not a leap year
-                    assert max_date.month == 2 and max_date.day == 29
-                    max_date = max_date.replace(year=max_date.year - edad, month=2, day=28)
-                queryParcial = Q(date_born__lte=max_date)
-                queryFinal = queryFinal & (queryParcial)
-
-            activo = request.POST.get('activo', '')
-            if activo == '':
-                activo= False
-            else:
-                activo= True
-            queryParcial = Q(is_active=activo)
-            queryFinal = queryFinal & (queryParcial)
-
-            personas = Persona.objects.filter(queryFinal).order_by('nombre')
-
-    else:
-        empresas = Empresa.objects.order_by('nombre')
+    empresas = Empresa.objects.order_by('nombre')
     paginator = Paginator(empresas, 10)
     page = request.GET.get('page')
     if page is None:
@@ -76,7 +38,7 @@ def indexEmpresas(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         companies = paginator.page(paginator.num_pages)
-    return render(request, 'indexEmpresas.html', {'empresas':companies,'formFilter':formFilter,})
+    return render(request, 'indexEmpresas.html', {'empresas':companies,})
 
 
 
@@ -89,17 +51,9 @@ def new_empresa(request):
         if form.is_valid():
             #try:
             nombre = request.POST.get('nombre', '')
-            apellidos = request.POST.get('apellidos', '')
-            observaciones = request.POST.get('observaciones', '')
-            is_active = request.POST.get('is_active', '')
-            idPersona = request.POST.get('id', '')
-            if is_active == '':
-                is_active= False
-            else:
-                is_active= True
-            date_born = request.POST.get('date_born', '')
-            english_level = request.POST.get('english_level', '')
-            empresa = request.POST.get('empresa', '')
+            ett = request.POST.get('ett', '')
+            localizacion = request.POST.get('localizacion', '')
+            ofertas=None
             if empresa == "":
                 newEmpresa = Empresa.objects.get(nombre="temporales")
             else:
