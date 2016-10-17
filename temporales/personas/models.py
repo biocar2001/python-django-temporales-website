@@ -6,39 +6,33 @@ from django.contrib.auth.models import User
 from datetime import date, datetime, timedelta, time
 from django.utils.timezone import now
 
-class Salario(models.Model):
-    nombre = models.CharField('nombre salario', max_length=250,default='no name')
-    edad = models.IntegerField('Edad salario')
-    amount = models.IntegerField('salario bruto anual')
+
+class Empresa(models.Model):
+    nombre = models.CharField('nombre', max_length=250,default='no name')
+    descripcion = models.CharField('Descripcion', max_length=250, default='no name')
     def __str__(self):              # __unicode__ on Python 2
         return self.nombre
 
 class Oferta(models.Model):
-    nombre = models.CharField('nombre oferta', max_length=250,default='no name')
-    hours_week = models.IntegerField('horas por semana')
-    time_contract = models.IntegerField('duracion contrato')
-    salarios = models.ForeignKey(Salario)
-    payment_home = models.BooleanField('casa pagada', default=False)
-    payment_healthcare = models.BooleanField('seguro medico pagado', default=False)
+    puesto = models.CharField('puest de la oferta', max_length=250,default='no name', blank=True, null=True)
+    hours_week = models.IntegerField('horas por semana', blank=True, null=True)
+    time_contract = models.IntegerField('duracion contrato', blank=True, null=True)
+    salarios = models.CharField('Salarios Oferta', max_length=900,default='no name', blank=True, null=True)
+    prize_home = models.DecimalField(max_digits=9, decimal_places=2, blank=True, null=True)
+    prize_healthcare = models.DecimalField(max_digits=9, decimal_places=2, blank=True, null=True)
+    empresa = models.ForeignKey(Empresa, blank=True, null=True)
     def __str__(self):              # __unicode__ on Python 2
-        return self.nombre
-
-class Empresa(models.Model):
-    nombre = models.CharField('nombre', max_length=250,default='no name')
-    ett = models.CharField('ett a la que pertenece', max_length=250)
-    localizacion = models.CharField('localizacion fisica de la empresa', max_length=500)
-    ofertas = models.ForeignKey(Oferta)
-    def __str__(self):              # __unicode__ on Python 2
-        return self.nombre
+        return self.puesto
 
 class Persona(models.Model):
     nombre = models.CharField('nombre', max_length=250,default='no name')
     apellidos = models.CharField('apellidos', max_length=500)
+    sexo = models.IntegerField('sexo')
     observaciones = models.TextField('observaciones', blank=True)
     is_active = models.BooleanField('usuario asignado', default=False)
     date_born = models.DateField('fecha nacimiento')
     english_level = models.IntegerField('nivel ingles')
-    empresa = models.ForeignKey(Empresa)
+    empresa = models.ForeignKey(Empresa, blank=True, null=True)
     def __str__(self):              # __unicode__ on Python 2
         return self.nombre
     def age(self):
@@ -54,3 +48,10 @@ class Persona(models.Model):
         elif self.english_level == 3:
             level='Alto'
         return level
+    def des_sex(self):
+        sex=''
+        if self.sexo == 1:
+            sex='Hombre'
+        elif self.english_level == 2:
+            sex='Mujer'
+        return sex

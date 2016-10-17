@@ -28,33 +28,57 @@ def home(request):
 def indexPersonas(request):
     meta=request.META
     ruta=meta['SCRIPT_NAME']
-    formFilter= FiltrosPersonasForm()
+    formFilterAux= FiltrosPersonasForm()
     if request.method == 'POST':
         form = FiltrosPersonasForm(data=request.POST)
 
         if form.is_valid():
-            empresa = request.POST.get('empresa', '')
+            empresa = request.POST.getlist('empresa')
+            empresas = map(int, empresa)
             queryFinal = Q()
-            if empresa != "":
-                newEmpresa = Empresa.objects.get(id=empresa)
-                queryParcial = Q(empresa=newEmpresa)
+            if len(empresas)>0:
+                empresasObjetos = Empresa.objects.filter(Q(id__in=empresas))
+                queryParcial = Q(empresa__in=empresasObjetos)
                 queryFinal = queryFinal & (queryParcial)
             ingles = request.POST.get('ingles', '')
             if ingles != "":
                 queryParcial = Q(english_level=ingles)
                 queryFinal = queryFinal & (queryParcial)
+            sexo = request.POST.get('sexo', '')
+            if sexo != "":
+                queryParcial = Q(sexo=sexo)
+                queryFinal = queryFinal & (queryParcial)
 
             edad = request.POST.get('edad', '')
+            edad = edad.strip()
             if edad != "":
-                edad=int(edad)
-                max_date = date.today()
-                try:
-                    max_date = max_date.replace(year=max_date.year - edad)
-                except ValueError: # 29th of february and not a leap year
-                    assert max_date.month == 2 and max_date.day == 29
-                    max_date = max_date.replace(year=max_date.year - edad, month=2, day=28)
-                queryParcial = Q(date_born__lte=max_date)
-                queryFinal = queryFinal & (queryParcial)
+                simbolo= edad[:1]
+                if simbolo == '>':
+                    edad=int(edad[1:])
+                    max_date = getDateEdad(edad)
+                    queryParcial = Q(date_born__lte=max_date)
+                    queryFinal = queryFinal & (queryParcial)
+                elif simbolo == '<':
+                    edad=int(edad[1:])
+                    max_date = getDateEdad(edad)
+                    queryParcial = Q(date_born__gte=max_date)
+                    queryFinal = queryFinal & (queryParcial)
+                elif "-"  in edad:
+                    # rangos
+                    rangos = edad.split('-')
+                    max_dateInit = getDateEdad(int(rangos[0]))
+                    max_dateEnd = getDateEdad(int(rangos[1]))
+                    init1=datetime(max_dateInit.year,1,1)
+                    init2=datetime(max_dateEnd.year,1,1)
+                    queryParcial = Q(date_born__range=(init2,init1))
+                    queryFinal = queryFinal & (queryParcial)
+
+                else:
+                    # edad exacta
+                    edad=int(edad)
+                    max_date = getDateEdad(edad)
+                    queryParcial = Q(date_born__year=max_date.year)
+                    queryFinal = queryFinal & (queryParcial)
 
             activo = request.POST.get('activo', '')
             if activo == '':
@@ -65,9 +89,11 @@ def indexPersonas(request):
             queryFinal = queryFinal & (queryParcial)
 
             personas = Persona.objects.filter(queryFinal).order_by('nombre')
+            formFilter = form
 
     else:
         personas = Persona.objects.order_by('nombre')
+        formFilter = formFilterAux
     paginator = Paginator(personas, 10)
     page = request.GET.get('page')
     if page is None:
@@ -83,6 +109,14 @@ def indexPersonas(request):
     return render(request, 'indexPersonas.html', {'personas':contacts,'formFilter':formFilter,})
 
 
+def getDateEdad(edad):
+    max_date = date.today()
+    try:
+        max_date = max_date.replace(year=max_date.year - edad)
+    except ValueError: # 29th of february and not a leap year
+        assert max_date.month == 2 and max_date.day == 29
+        max_date = max_date.replace(year=max_date.year - edad, month=2, day=28)
+    return max_date
 
 @login_required
 def new_persona(request):
@@ -103,6 +137,7 @@ def new_persona(request):
                 is_active= True
             date_born = request.POST.get('date_born', '')
             english_level = request.POST.get('english_level', '')
+            sexo = request.POST.get('sexo', '')
             empresa = request.POST.get('empresa', '')
             if empresa == "":
                 newEmpresa = Empresa.objects.get(nombre="temporales")
@@ -118,12 +153,13 @@ def new_persona(request):
                     newPersona.date_born = date_born
                     newPersona.english_level = english_level
                     newPersona.empresa = newEmpresa
+                    newPersona.sexo = sexo
                     newPersona.save()
 
                 except:
                     print "Error in get for saving persona"
             else:
-                newPersona = Persona(nombre = nombre, apellidos = apellidos, observaciones = observaciones, is_active = is_active, date_born = date_born, english_level = english_level, empresa =newEmpresa)
+                newPersona = Persona(nombre = nombre, apellidos = apellidos, observaciones = observaciones, is_active = is_active, date_born = date_born, english_level = english_level, empresa =newEmpresa, sexo = sexo)
                 newPersona.save()
 
             #except:

@@ -24,7 +24,6 @@ from django.core.exceptions import ObjectDoesNotExist
 def indexEmpresas(request):
     meta=request.META
     ruta=meta['SCRIPT_NAME']
-    formFilter= FiltrosEmpresasForm()
     empresas = Empresa.objects.order_by('nombre')
     paginator = Paginator(empresas, 10)
     page = request.GET.get('page')
@@ -51,35 +50,26 @@ def new_empresa(request):
         if form.is_valid():
             #try:
             nombre = request.POST.get('nombre', '')
-            ett = request.POST.get('ett', '')
-            localizacion = request.POST.get('localizacion', '')
+            descripcion = request.POST.get('descripcion', '')
+            idEmpresa = request.POST.get('id', '')
             ofertas=None
-            if empresa == "":
-                newEmpresa = Empresa.objects.get(nombre="temporales")
-            else:
-                newEmpresa = Empresa.objects.get(id=empresa)
-            if idPersona !="":
+
+            if idEmpresa !="":
                 try:
-                    newPersona = Persona.objects.get(pk = idPersona)
-                    newPersona.nombre = nombre
-                    newPersona.apellidos = apellidos
-                    newPersona.observaciones = observaciones
-                    newPersona.is_active = is_active
-                    newPersona.date_born = date_born
-                    newPersona.english_level = english_level
-                    newPersona.empresa = newEmpresa
-                    newPersona.save()
+                    newEmpresa = Empresa.objects.get(pk = idEmpresa)
+                    newEmpresa.nombre = nombre
+                    newEmpresa.descripcion = descripcion
+                    newEmpresa.save()
 
                 except:
-                    print "Error in get for saving persona"
+                    print "Error in get for saving empresa"
             else:
-                newPersona = Persona(nombre = nombre, apellidos = apellidos, observaciones = observaciones, is_active = is_active, date_born = date_born, english_level = english_level, empresa =newEmpresa)
-                newPersona.save()
+                newEmpresa = Empresa(nombre = nombre, descripcion = descripcion)
+                newEmpresa.save()
 
             #except:
             #    print "Error in save persona"
-            formFilter= FiltrosPersonasForm()
-            personas = Persona.objects.order_by('nombre')
+            personas = Empresa.objects.order_by('nombre')
             paginator = Paginator(personas, 10)
             page = request.GET.get('page')
             try:
@@ -90,19 +80,76 @@ def new_empresa(request):
             except EmptyPage:
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 contacts = paginator.page(paginator.num_pages)
-            return render(request, 'indexPersonas.html', {'personas':contacts,'formFilter':formFilter,})
+            if idEmpresa !="":
+                return render(request, 'indexEmpresas.html', {'empresas':contacts,})
+            else:
+                form = EmpresasForm(instance=newEmpresa)
+                return render(request, 'newEmpresa.html', {'form':form,})
     else:
         form = EmpresasForm()
     return render(request, 'newEmpresa.html', {'form':form,})
 
 @login_required
-def detailPersona(request, idempresa):
+def detailEmpresa(request, idempresa):
     meta = request.META
     ruta = meta['SCRIPT_NAME']
-    try:
-        empresa = Empresa.objects.get(pk = idempresa)
-    except:
-		messages.error(request, 'la empresa '+ idempresa + ' no existe' )
-		return HttpResponseRedirect(ruta+"/personas/")
+    empresa = Empresa.objects.get(pk = idempresa)
     form = EmpresasForm(instance=empresa)
-    return render(request, 'newEmpresa.html', {'form':form,})
+    return render(request, 'newEmpresa.html', {'form':form,'ofertas':empresa.oferta_set.all(),})
+
+@login_required
+def new_oferta(request, idempresa):
+    meta = request.META
+    ruta = meta['SCRIPT_NAME']
+    if request.method == 'POST':
+        form = OfertaForm(data=request.POST)
+        if form.is_valid():
+            #try:
+            puesto = request.POST.get('puesto', '')
+            hours_week = request.POST.get('hours_week', '')
+            idOferta = request.POST.get('id', '')
+            salarios=request.POST.get('salarios', '')
+            time_contract = request.POST.get('time_contract', '')
+            prize_home = request.POST.get('prize_home', '')
+            prize_healthcare = request.POST.get('prize_healthcare', '')
+            empresa = Empresa.objects.get(pk = idempresa)
+            if idOferta !="":
+                try:
+                    newOferta = Oferta.objects.get(pk = idOferta)
+                    newOferta.puesto = puesto
+                    newOferta.hours_week = hours_week
+                    newOferta.time_contract = time_contract
+                    newOferta.prize_home = prize_home
+                    newOferta.prize_healthcare = prize_healthcare
+                    newOferta.save()
+
+                except:
+                    print "Error in get for saving empresa"
+            else:
+                newOferta = Oferta(puesto = puesto, hours_week = hours_week, salarios = salarios, time_contract = time_contract, prize_home = prize_home, prize_healthcare = prize_healthcare, empresa = empresa)
+                newOferta.save()
+
+            form = EmpresasForm(instance=empresa)
+            '''
+            paginator = Paginator(ofertas, 10)
+            page = request.GET.get('page')
+            try:
+                contacts = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                contacts = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                contacts = paginator.page(paginator.num_pages)'''
+            return render(request, 'newEmpresa.html', {'form':form, 'ofertas':empresa.oferta_set.all(),})
+    else:
+        form = OfertaForm()
+    return render(request, 'newOferta.html', {'form':form,'idEmpresa':idempresa,})
+
+@login_required
+def detailOferta(request, idoferta, idempresa):
+    meta = request.META
+    ruta = meta['SCRIPT_NAME']
+    oferta = Oferta.objects.get(pk = idoferta)
+    form = OfertaForm(instance=oferta)
+    return render(request, 'newOferta.html', {'form':form,'idEmpresa':idempresa,})

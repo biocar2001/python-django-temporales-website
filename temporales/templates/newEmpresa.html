@@ -17,4 +17,57 @@ function goBack() {
             <br>
          </form>
 </div>
+
+
+<!-- line modal -->
+
+<div class="container">
+    {% if form.id.value %}
+        <a href="/newOferta/{{ form.id.value }}" class="save btn btn-info" role="button" aria-disabled="true">Nueva Oferta</a>
+    {% else %}
+        <div class="alert alert-warning" role="alert"><h1 class="jumbotron-heading">Una vez crees la empresa podras añadir ofertas a la misma</h1></div>
+    {% endif %}
+</div><br>
+<br><br>
+
+
+ <div class="container">
+
+{% if ofertas.all %}
+	<u> LISTADO DE OFERTAS</u>
+	<table class="table table-striped">
+	<thead class="thead-default">
+    	<tr>
+    	 <th>Puesto</th>
+    	  <th>Horas Semana</th>
+    	  <th>Duracion Contrato</th>
+    	  <th>Precio Casa</th>
+    	  <th>Precio Seguro</th>
+    	  <th></th>
+    	</tr>
+	</thead>
+  <tbody>
+	{% for oferta in ofertas.all %}
+		<tr>
+		  <td>{{oferta.puesto}}</td>
+		  <td>{{oferta.hours_week}}</td>
+		  <td>{{oferta.time_contract}}</td>
+		  <td>{{oferta.prize_home}}</td>
+		  <td>{{oferta.prize_healthcare}}</td>
+		  <td><a href="/detailOferta/{{oferta.id}}/{{form.id.value}}" class="save btn btn-primary" role="button" aria-disabled="true">Detalle</a></td>
+		</tr>
+	{% endfor %}
+	</tbody>
+	</table>
+
+
+
+
+{% elif form.id.value %}
+    <div class="alert alert-success" role="alert"><h1 class="jumbotron-heading">No existen ofertas para esta empresa en la base de datos</h1></div>
+
+{% endif %}
+</div>
+
+
 {% endblock %}

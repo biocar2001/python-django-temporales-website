@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<div class="container">
+        <u> OFERTA </u>
+        <form method="POST" action="/newOferta/{{idEmpresa}}/"class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Guardar</button>
+            <a href="/detailEmpresa/{{idEmpresa}}" class="save btn btn-primary" role="button" aria-disabled="true">Cancelar</a>
+            <br>
+            <br>
+         </form>
+</div>
+{% endblock %}

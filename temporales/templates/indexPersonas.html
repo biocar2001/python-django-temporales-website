@@ -3,34 +3,36 @@
 {% block content %}
 {% load static %}
 <div class="container">
-    <button data-toggle="modal" data-target="#squarespaceModal" class="save btn btn-success">Filtrar</button>
-    <td></td>
     <a href="/newPersona/" class="save btn btn-info" role="button" aria-disabled="true">Nuevo</a>
     <a href="/personas/" class="save btn btn-warning" role="button" aria-disabled="true">Limpiar Filtros</a>
 </div><br>
-<!-- line modal -->
-<div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-			<h3 class="modal-title" id="lineModalLabel">Filtros</h3>
-		</div>
-		<div class="modal-body">
-            {% if formFilter%}
-            <!-- content goes here -->
-			<form method="POST" action="{% url 'personas' %}" id="filter" class="form">{% csrf_token %}
-			{{ formFilter.as_p }}
+<div class="container">
+
+	<div class="body">
+        {% if formFilter%}
+        <!-- content goes here -->
+		<form method="POST" action="{% url 'personas' %}" id="filter" class="form">{% csrf_token %}
+		{{ formFilter.as_p }}
 
 
-              <button type="submit" class="btn btn-primary">Filtrar</button>
-            </form>
-            {% endif %}
-		</div>
+          <button type="submit" class="btn btn-primary">Filtrar</button>
+        <!-- Initialize the plugin: -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+               $('#id_empresa').multiselect();
 
+            });
+        </script>
+        </form>
+        {% endif %}
 	</div>
-  </div>
+
 </div>
+<br><br>
+<!-- line modal -->
+
+
+
  <div class="container">
 
 {% if personas %}
@@ -42,7 +44,8 @@
     	  <th>Apellidos</th>
     	  <th>Nivel Ingles</th>
     	  <th>Edad</th>
-    	  <th>Empresa</th>
+    	  <th>Sexo</th>
+    	  <th>ETT</th>
     	  <th></th>
     	</tr>
 	</thead>
@@ -53,6 +56,7 @@
 		  <td>{{persona.apellidos}}</td>
 		  <td>{{persona.ingles}}</td>
 		  <td>{{persona.age}}</td>
+		  <td>{{persona.des_sex}}</td>
 		  <td>{{persona.empresa}}</td>
 		  <td><a href="/detailPersona/{{persona.id}}" class="save btn btn-primary" role="button" aria-disabled="true">Detalle</a></td>
 		</tr>
@@ -71,8 +75,11 @@
             </li>
             {% endif %}
             <li class="page-item active">
-                <span class="current">
-                    Page {{ personas.number }} of {{ personas.paginator.num_pages }}.
+                <span class="current espaciospamd">
+                    Pagina {{ personas.number }} de {{ personas.paginator.num_pages }}.
+                </span>
+                 <span class="espaciospam">
+                    Total Personas: <span class="badge">{{ personas.paginator.count }}</span>
                 </span>
             </li>
 
@@ -84,10 +91,14 @@
               </a>
             </li>
             {% endif %}
-            <li class="page-item"><strong>Total Personas:</strong> {{ personas.paginator.count }}</li>
+            <!--<li class="page-item"><strong>Total Personas:</strong> {{ personas.paginator.count }}</li>-->
 
         </ul>
     </nav>
+
+
+
+
 
 {% else %}
 	<h1 class="jumbotron-heading"> El filtro seleccionado no devuelve resultados o No existen personas en la base de datos</h1>

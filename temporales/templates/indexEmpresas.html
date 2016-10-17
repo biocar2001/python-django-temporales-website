@@ -4,7 +4,6 @@
 {% load static %}
 <div class="container">
     <a href="/newEmpresa/" class="save btn btn-info" role="button" aria-disabled="true">Nuevo</a>
-    <a href="/empresas/" class="save btn btn-warning" role="button" aria-disabled="true">Refrescar Listado</a>
 </div><br>
 
  <div class="container">
@@ -14,9 +13,8 @@
 	<table class="table table-striped">
 	<thead class="thead-default">
     	<tr>
-    	 <th>Nombre</th>
     	  <th>ETT</th>
-    	  <th>Localizacion</th>
+    	  <th>Descripcion</th>
     	  <th></th>
     	</tr>
 	</thead>
@@ -24,8 +22,7 @@
 	{% for empresa in empresas %}
 		<tr>
 		  <td>{{empresa.nombre}}</td>
-		  <td>{{empresa.ett}}</td>
-		  <td>{{empresa.localizacion}}</td>
+		  <td>{{empresa.descripcion}}</td>
 		  <td><a href="/detailEmpresa/{{empresa.id}}" class="save btn btn-primary" role="button" aria-disabled="true">Detalle</a></td>
 		</tr>
 	{% endfor %}
@@ -44,7 +41,10 @@
             {% endif %}
             <li class="page-item active">
                 <span class="current">
-                    Page {{ empresas.number }} of {{ empresas.paginator.num_pages }}.
+                    Pagina {{ empresas.number }} de {{ empresas.paginator.num_pages }}.
+                </span>
+                 <span class="espaciospam">
+                    Total Empresas: <span class="badge">{{ empresas.paginator.count }}</span>
                 </span>
             </li>
 
@@ -56,7 +56,8 @@
               </a>
             </li>
             {% endif %}
-            <li class="page-item"><strong>Total Empresas:</strong> {{ empresas.paginator.count }}</li>
+
+            <!--<li class="page-item"><strong>Total Empresas:</strong> {{ empresas.paginator.count }}</li>-->
 
         </ul>
     </nav>
