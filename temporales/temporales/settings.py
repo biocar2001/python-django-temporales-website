@@ -70,21 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'temporales.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'biocar2001$temporales',
-        'USER': 'biocar2001',
-        'PASSWORD': 'Guadalu40',
-        'HOST': 'biocar2001.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
-    }
-}
+WSGI_APPLICATION = 'temporales.wsgi.application
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
