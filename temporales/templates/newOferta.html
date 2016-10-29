@@ -10,6 +10,12 @@
             <a href="/detailEmpresa/{{idEmpresa}}" class="save btn btn-primary" role="button" aria-disabled="true">Cancelar</a>
             <br>
             <br>
+           	 <!-- Initialize the plugin: -->
+	        <script type="text/javascript">
+	            $(document).ready(function() {
+	               tinymce.init({ selector:'#id_salarios' });
+	            });
+	        </script>
          </form>
 </div>
 {% endblock %}

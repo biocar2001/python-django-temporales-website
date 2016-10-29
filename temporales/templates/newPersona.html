@@ -15,6 +15,16 @@ function goBack() {
             <a href="/personas/" class="save btn btn-primary" role="button" aria-disabled="true">Cancelar</a>
             <br>
             <br>
+            <!-- Initialize the plugin: -->
+	        <script type="text/javascript">
+	            $('#id_date_born').datepicker({
+				    format: "yyyy-mm-dd",
+				    weekStart: 1,
+				    startView: 1,
+				    minViewMode: 1,
+				    language: "es"
+				});
+	        </script>
          </form>
 </div>
 {% endblock %}
