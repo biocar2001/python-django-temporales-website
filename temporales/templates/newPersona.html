@@ -20,10 +20,11 @@ function goBack() {
 	            $('#id_date_born').datepicker({
 				    format: "yyyy-mm-dd",
 				    weekStart: 1,
+				    startDate: "1981-01-01",
 				    startView: 1,
-				    minViewMode: 1,
 				    language: "es"
 				});
+				tinymce.init({ selector:'#id_observaciones' });
 	        </script>
          </form>
 </div>

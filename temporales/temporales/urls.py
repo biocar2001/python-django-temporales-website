@@ -21,7 +21,7 @@ from django.contrib.auth import views
 from personas.forms import LoginForm
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    #url(r'^admin/', admin.site.urls),
     url(r'', include('personas.urls')),
     url(r'', include('empresas.urls')),
     url(r'^login/$', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}, name='login'),

@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '4egl#q^zt_#$!d+mmp=ucgg+w)l64vwy0pw_ckc-oif)n6t$t3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['biocar2001.pythonanywhere.com']
 
 
 # Application definition

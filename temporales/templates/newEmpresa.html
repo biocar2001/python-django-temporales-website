@@ -50,10 +50,10 @@ function goBack() {
 	{% for oferta in ofertas.all %}
 		<tr>
 		  <td>{{oferta.puesto}}</td>
-		  <td>{{oferta.hours_week}}</td>
+		  <td>{{oferta.des_hours_week}}</td>
 		  <td>{{oferta.time_contract}}</td>
-		  <td>{{oferta.prize_home}}</td>
-		  <td>{{oferta.prize_healthcare}}</td>
+		  <td>{{oferta.des_prize_home}}</td>
+		  <td>{{oferta.des_prize_healthcare}}</td>
 		  <td><a href="/detailOferta/{{oferta.id}}/{{form.id.value}}" class="save btn btn-primary" role="button" aria-disabled="true">Detalle</a></td>
 		</tr>
 	{% endfor %}

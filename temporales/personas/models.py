@@ -23,6 +23,12 @@ class Oferta(models.Model):
     empresa = models.ForeignKey(Empresa, blank=True, null=True)
     def __str__(self):              # __unicode__ on Python 2
         return self.puesto
+    def des_hours_week(self):
+        return str(self.hours_week)+" Horas"
+    def des_prize_home(self):
+        return str(self.prize_home) + " €"
+    def des_prize_healthcare(self):
+        return str(self.prize_healthcare) + " €"
 
 class Persona(models.Model):
     nombre = models.CharField('nombre', max_length=250,default='no name')
