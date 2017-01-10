@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4egl#q^zt_#$!d+mmp=ucgg+w)l64vwy0pw_ckc-oif)n6t$t3'
+SECRET_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['biocar2001.pythonanywhere.com']
+ALLOWED_HOSTS = ['XXXXXXXXXXXXXXXXXXXXXXXXm']
 
 
 # Application definition
@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'temporales.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'biocar2001$temporales',
-        'USER': 'biocar2001',
-        'PASSWORD': 'Guadalu40',
-        'HOST': 'biocar2001.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
+        'NAME': 'XXXXXXXXX',
+        'USER': 'XXXXXXX',
+        'PASSWORD': 'XXXXXX',
+        'HOST': 'XXXXXXXXXXXXXXXXXXXXXXX',   # Or an IP Address that your DB is hosted on
     }
 }
 # Password validation
