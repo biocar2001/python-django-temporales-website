@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^personas/$', views.indexPersonas, name='personas'),
     url(r'^newPersona/$', views.new_persona, name='newPersona'),
     url(r'^detailPersona/(?P<idpersona>\d+)/$', views.detailPersona, name='detailPersona'),
+    url(r'^deletePersona/(?P<idpersona>\d+)/$', views.deletePersona, name='deletePersona'),
 ]

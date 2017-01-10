@@ -24,11 +24,14 @@ class FiltrosPersonasForm(forms.Form):
         ('2', 'Mujer'),
     )
     #FILTROS
-    empresa = forms.ModelMultipleChoiceField(label="ETT",queryset=Empresa.objects.all().order_by('nombre'),widget=forms.SelectMultiple(attrs={'class':'form-control'}),required=False)
+    nombre= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=False)
+    apellidos= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=False)
     ingles= forms.CharField(widget=forms.Select(choices=MY_CHOICES, attrs={'class':'form-control'}), required= False)
     sexo= forms.CharField(widget=forms.Select(choices=SEXO_CHOICES, attrs={'class':'form-control'}), required= False)
     edad= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'ejemplos de opciones: >25, <23, 17-23, 23'}), required=False)
+    empresa = forms.ModelMultipleChoiceField(label="ETT",queryset=Empresa.objects.all().order_by('nombre'),widget=forms.SelectMultiple(attrs={'class':'form-control'}),required=False)
     activo= forms.BooleanField(required=False,initial=False, label='Activo')
+
 
 class PersonasForm(ModelForm):
 
@@ -46,6 +49,7 @@ class PersonasForm(ModelForm):
     #Campos
     nombre= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=True)
     apellidos= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=True)
+    telefono= forms.CharField(widget=forms.widgets.TextInput(attrs={'class':'form-control'}), required=True)
     empresa= forms.ModelChoiceField(queryset=Empresa.objects.all().order_by('nombre'), widget=forms.Select(attrs={'class':'form-control'}),required=False)
     english_level= forms.CharField(widget=forms.Select(choices=MY_CHOICES, attrs={'class':'form-control'}), required= True,label='Nivel de Ingles')
     sexo= forms.CharField(widget=forms.Select(choices=SEXO_CHOICES, attrs={'class':'form-control'}), required= True,label='Sexo')
@@ -55,6 +59,6 @@ class PersonasForm(ModelForm):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     class Meta:
 	    model = Persona
-	    fields = ('nombre', 'apellidos', 'empresa', 'english_level', 'sexo','is_active', 'date_born', 'observaciones', 'id')
+	    fields = ('nombre', 'apellidos', 'telefono', 'empresa', 'english_level', 'sexo','is_active', 'date_born', 'observaciones', 'id')
 
 

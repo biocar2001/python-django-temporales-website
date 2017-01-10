@@ -32,7 +32,8 @@ class Oferta(models.Model):
 
 class Persona(models.Model):
     nombre = models.CharField('nombre', max_length=250,default='no name')
-    apellidos = models.CharField('apellidos', max_length=500)
+    apellidos = models.CharField('apellidos', max_length=500,default='no surname')
+    telefono = models.CharField('telefono', max_length=20,default='no phone')
     sexo = models.IntegerField('sexo')
     observaciones = models.TextField('observaciones', blank=True)
     is_active = models.BooleanField('usuario asignado', default=False)

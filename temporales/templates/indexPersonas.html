@@ -6,6 +6,7 @@
     <a href="/newPersona/" class="save btn btn-info" role="button" aria-disabled="true">Nuevo</a>
     <a href="/personas/" class="save btn btn-warning" role="button" aria-disabled="true">Limpiar Filtros</a>
 </div><br>
+
 <div class="container">
 
 	<div class="body">
@@ -42,10 +43,12 @@
     	<tr>
     	 <th>Nombre</th>
     	  <th>Apellidos</th>
+    	  <th>Telefono</th>
     	  <th>Nivel Ingles</th>
     	  <th>Edad</th>
     	  <th>Sexo</th>
     	  <th>ETT</th>
+    	  <th></th>
     	  <th></th>
     	</tr>
 	</thead>
@@ -54,11 +57,13 @@
 		<tr>
 		  <td>{{persona.nombre}}</td>
 		  <td>{{persona.apellidos}}</td>
+		  <td>{{persona.telefono}}</td>
 		  <td>{{persona.ingles}}</td>
 		  <td>{{persona.age}}</td>
 		  <td>{{persona.des_sex}}</td>
 		  <td>{{persona.empresa}}</td>
 		  <td><a href="/detailPersona/{{persona.id}}" class="save btn btn-primary" role="button" aria-disabled="true">Detalle</a></td>
+		  <td><a href="/deletePersona/{{persona.id}}" class="save btn btn-danger" role="button" aria-disabled="true">Eliminar</a></td>
 		</tr>
 	{% endfor %}
 	</tbody>

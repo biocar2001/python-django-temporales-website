@@ -10,6 +10,20 @@ function goBack() {
 <div class="container">
 
         <form method="POST" action="/newPersona/"class="post-form">{% csrf_token %}
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
             {{ form.as_p }}
             <button type="submit" class="save btn btn-default">Guardar</button>
             <a href="/personas/" class="save btn btn-primary" role="button" aria-disabled="true">Cancelar</a>
@@ -20,7 +34,7 @@ function goBack() {
 	            $('#id_date_born').datepicker({
 				    format: "yyyy-mm-dd",
 				    weekStart: 1,
-				    startDate: "1981-01-01",
+				    startDate: "1900-01-01",
 				    startView: 1,
 				    language: "es"
 				});
